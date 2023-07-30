@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from api.models import Sample
+from api.models import Record
 # Register your models here.
 
-admin.site.register(Sample)
+admin.site.register(Record)
