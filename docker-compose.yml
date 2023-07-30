@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./cms_controller/Dockerfile
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - 8000:8000
+    volumes:
+      - ./cms_controller:/cms_controller
+    environment:
+      - SECRET_KEY=django-insecure-3f4v82qv9a3z9e19lfn%%nsf&h#-+z4k9#ue-$sx99c-)va8dc
+      - DEBUG=1
+      - DB_HOST=db
+      - DB_NAME=cms_dev_db
+      - DB_USER=dev_user
+      - DB_PASS=changeme
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=changeme
+      - MYSQL_DATABASE=cms_dev_db
+      - MYSQL_USER=dev_user
+      - MYSQL_PASSWORD=changeme
